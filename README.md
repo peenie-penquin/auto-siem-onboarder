@@ -1,5 +1,8 @@
 # Setting up development environment
 - Ensure dotnet 5.0 SDK is installed
+```
+https://dotnet.microsoft.com/en-us/download/dotnet/5.0
+```
 - Run `make init`, it executes:
     - `dotnet restore` to restore all project dependencies
     - `dotnet tool restore` to restore tools used for the project
