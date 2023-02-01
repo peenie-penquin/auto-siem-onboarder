@@ -1,0 +1,64 @@
+@model AutoSiem.ScriptUploadDTO
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<br>
+<h4><strong>Modify a script</strong></h4>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Upload">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OperatingSystem" class="control-label"></label>
+                <select asp-for="OperatingSystem" onchange="onchangeOption()" class="form-control">
+                    <option value="0">Debian</option>
+                    <option value="1">Ubuntu</option>
+                    <option value="2">CentOS</option>
+                    <option value="3">Red Hat Linux</option>
+                    <option value="4">IUseArchBtw</option>
+                    <option value="5">Windows10</option>
+                    <option value="6">Windows7</option>
+                    <option value="7">WindowsXP</option>
+                    <option value="8">WindowsNT</option>
+                    <option value="9">Windows2000</option>
+                    <option value="10">Unknown</option>
+                </select>
+                <span asp-validation-for="OperatingSystem" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ScriptContent" class="control-label"></label>
+                <textarea asp-for="ScriptContent" class="form-control" rows="20"></textarea>
+                <span asp-validation-for="ScriptContent" class="text-danger">
+                    Code will replace #VARIABLE# with its content.
+                </span>
+                <span asp-validation-for="ScriptContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    function onchangeOption(){
+        var selectElement = document.getElementById("OperatingSystem");
+        var osEnum = selectElement.options[selectElement.selectedIndex].value;
+        var baseUrl = window.location.href.split("?")[0];
+        var newUrl = baseUrl + "?os=" + osEnum;
+        window.location.href = newUrl;
+    }
+</script>
+
+@section Scripts {
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

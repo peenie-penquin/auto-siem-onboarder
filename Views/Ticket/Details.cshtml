@@ -1,0 +1,273 @@
+@model AutoSiem.OnboardTicket
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div>
+    <div class="row">
+        <div class="col">
+            <h3 class="text-primary"><strong>@Html.DisplayFor(model => model.Title)</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="Edit" class="btn-sm btn-success" asp-route-id="@Model.Id">Edit</a>
+
+            @if (Model.Closed.Year == 1)
+            {
+                <a asp-action="CloseTicket" class="btn-sm btn-secondary" asp-route-id="@Model.Id">Close Ticket</a>
+            }
+            else
+            {
+                <a asp-action="OpenTicket" class="btn-sm btn-secondary" asp-route-id="@Model.Id">Reopen Ticket</a>
+            }
+        </div>
+    </div>
+    <span class="badge badge-pill badge-info">
+        Created: @Html.DisplayFor(model => model.Created)
+    </span>
+    @if (Model.Closed.Year > 1)
+    {
+        <span class="badge badge-pill badge-info">
+            Closed: @Html.DisplayFor(model => model.Closed)
+        </span>
+    }
+    <p style="white-space:pre-line;">
+        @Html.DisplayFor(model => model.Description)
+    </p>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Platform Information</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="SelectPlatform" class="btn-sm btn-success" asp-route-id="@Model.Id">Add Platform</a>
+        </div>
+    </div>
+    <div>
+        @if (Model.Platform == null)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet filled in your Platform Information. Click the "Add Platform" to do so.
+            </p>
+        }
+        else
+        {
+            <h4 class="text-primary">
+                <a asp-action="Details" asp-controller="Platform" asp-route-id="@Model.Platform.Id">
+                    @Model.Platform.Name
+                </a>
+            </h4>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Division
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Division
+                </dd>
+                <dt class="col-sm-2">
+                    Category
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Category
+                </dd>
+                <dt class="col-sm-2">
+                    Approved By
+                </dt>
+                @if (Model.Platform.ApprovedBy == null)
+                {
+                    <dd class="col-sm-10">
+                        Not Yet Approved
+                    </dd>
+                }
+                else
+                {
+                    <dd class="col-sm-10">
+                        @Model.Platform.ApprovedBy
+                    </dd>
+                }
+                <dt class="col-sm-2">
+                    Date Onboarded
+                </dt>
+                @if (Model.Platform.DateOnboarded.Year > 1)
+                {
+                    <dd class="col-sm-10">
+                        @Model.Platform.DateOnboarded
+                    </dd>
+                }
+                else
+                {
+                    <dd class="col-sm-10">
+                        Not Yet Onboarded
+                    </dd>
+                }
+                <dt class="col-sm-2">
+                    Siem
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Siem.Name
+                </dd>
+            </dl>
+        }
+    </div>
+
+    <hr>
+
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Automation</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            @if (Model.Platform != null)
+            {
+                <a asp-action="AddSettings" asp-controller="Platform" class="btn-sm btn-success"
+                asp-route-id="@Model.Platform.Id">Configure</a>
+                <a asp-action="Download" asp-controller="Script" class="btn-sm btn-success"
+                asp-route-platformId="@Model.Platform.Id">Download</a>
+            }
+        </div>
+    </div>
+    <div>
+        @if (Model.Platform == null || Model.Platform.Settings == null)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet configured your Automation Settings. Click "Configure" to do so.
+            </p>
+        }
+        else
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Operating System
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Settings.OperatingSystem
+                </dd>
+                <dt class="col-sm-2">
+                    isSystemLog
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Settings.isSystemLogs
+                </dd>
+                <dt class="col-sm-2">
+                    CustomLogPaths
+                </dt>
+                <dd class="col-sm-10">
+                    @Model.Platform.Settings.CustomLogPaths
+                </dd>
+            </dl>
+        }
+    </div>
+
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Detected Nodes</strong></h3>
+        </div>
+    </div>
+    @if (Model.Platform != null && Model.Platform.Nodes != null && Model.Platform.Nodes.Count > 0)
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        IpAddress
+                    </th>
+                    <th>
+                        Hostname
+                    </th>
+                    <th>
+                        Operating System
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var myNode in Model.Platform.Nodes)
+                {
+                    <tr>
+                        <td>
+                            @myNode.IpAddress
+                        </td>
+                        <td>
+                            @myNode.Hostname
+                        </td>
+                        <td>
+                            @myNode.OS
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center text-secondary">
+            No Nodes Found.
+        </p>
+        <p class="text-center text-secondary">
+            Please download the reccommended scripts and run them to auomatically populate your platform nodes.
+        </p>
+    }
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Comments</strong></h3>
+        </div>
+    </div>
+    <div>
+        @if (Model.Comments != null)
+        {
+            foreach (Comment comment in Model.Comments.OrderBy(x => x.Created))
+            {
+
+                <div style="margin-bottom: 6px;" class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">@comment.Owner </h5>
+                            </div>
+                            <div class="col-auto"> </div>
+                            <div class="col text-right">
+                                <span class="badge badge-pill badge-dark">
+                                    @comment.Created
+                                </span>
+                            </div>
+                        </div>
+                        <p class="card-text">
+                            @comment.Message
+                        </p>
+                    </div>
+                </div>
+            }
+        }
+
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-group" asp-action="PostComment">
+                    <div style="margin-top: 30px;" class="input-group mb-3">
+                        <input type="text" name="message" class="form-control">
+                        <input type="hidden" name="id" value="@Model.Id" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>

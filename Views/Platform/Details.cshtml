@@ -1,0 +1,296 @@
+@model AutoSiem.Platform
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4>Platform</h4>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Division)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Division)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+    <hr />
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>SIEM</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="AddSiem" class="btn-sm btn-success" asp-route-id="@Model.Id">Add SIEM</a>
+        </div>
+    </div>
+    <div>
+        @if (Model.Siem == null)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet added any SIEM. Click "Add SIEM" to do so.
+            </p>
+        }
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Siem.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Siem.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Siem.IpAddress)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Siem.IpAddress)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Siem.Port)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Siem.Port)
+            </dd>
+        </dl>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>SMEs</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="AddSme" class="btn-sm btn-success" asp-route-id="@Model.Id">Add SMEs</a>
+        </div>
+    </div>
+    <div>
+        @if (Model.SMEs == null || Model.SMEs.Count == 0)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet added any SME. Click "Add SMEs" to do so.
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Division
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (User item in Model.SMEs)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Division)
+                            </td>
+                            <td>
+                                <a asp-action="RemoveSme" class="btn-sm btn-danger" asp-route-id="@Model.Id" asp-route-smeId="@item.Id">Remove </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Owners</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="AddOwner" class="btn-sm btn-success" asp-route-id="@Model.Id">Add Owners</a>
+        </div>
+    </div>
+    <div>
+        @if (Model.Owners == null || Model.Owners.Count == 0)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet added any Owners. Click "Add Owners" to do so.
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Division
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (User item in Model.Owners)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Division)
+                            </td>
+                            <td>
+                                <a asp-action="RemoveOwner" class="btn-sm btn-danger" asp-route-id="@Model.Id" asp-route-ownerId="@item.Id">Remove </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Automation</strong></h3>
+        </div>
+        <div class="col-auto"> </div>
+        <div class="col text-right">
+            <a asp-action="AddSettings" class="btn-sm btn-success" asp-route-id="@Model.Id">Configure</a>
+        </div>
+    </div>
+    <div>
+        @if (Model.Settings == null)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet configured your Automation Settings. Click "Configure" to do so.
+            </p>
+        }
+        else
+        {
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Settings.OperatingSystem)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Settings.OperatingSystem)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Settings.isSystemLogs)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Settings.isSystemLogs)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Settings.CustomLogPaths)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Settings.CustomLogPaths)
+                </dd>
+            </dl>
+        }
+
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <h3><strong>Nodes</strong></h3>
+        </div>
+    </div>
+    <div>
+        @if (Model.Nodes == null || Model.Nodes.Count == 0)
+        {
+            <p class="text-center text-secondary">
+                It looks like you have not yet added your nodes. Please run the scripts above on your machines to
+                auomatically populate the nodes.
+            </p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            IpAddress
+                        </th>
+                        <th>
+                            Hostname
+                        </th>
+                        <th>
+                            Operating System
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var myNode in Model.Nodes)
+                    {
+                        <tr>
+                            <td>
+                                @myNode.IpAddress
+                            </td>
+                            <td>
+                                @myNode.Hostname
+                            </td>
+                            <td>
+                                @myNode.OS
+                            </td>
+                            <td>
+                                <a asp-action="RemoveNode" class="btn-sm btn-danger" asp-route-id="@Model.Id" asp-route-nodeId="@myNode.Id">Remove </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>

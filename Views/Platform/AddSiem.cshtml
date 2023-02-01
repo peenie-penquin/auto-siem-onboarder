@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Edit";
+    List<Siem> siems =  (List<Siem>)ViewData["Siems"];
+    Guid id =  (Guid)ViewData["Id"];
+}
+
+<h1>Add Siem</h1>
+
+<h4>Platform</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddSiem">
+            <input type="hidden" name="id" value="@id"/>
+            <div class="form-group">
+                <select name="siemId" class="form-control">
+                    @foreach (Siem item in siems)
+                    {
+                        <option value="@item.Id">@item.Name - @item.IpAddress - @item.Port</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

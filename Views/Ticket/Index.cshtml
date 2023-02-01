@@ -1,0 +1,69 @@
+@model IEnumerable<AutoSiem.OnboardTicket>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="row">
+    <div class="col"> 
+        <h2>Tickets</h2>
+    </div>
+    <div class="col-auto"> </div>
+    <div class="col text-right">
+        <a class="btn btn-success" asp-action="Create">Create New Ticket</a>
+    </div>
+</div>
+
+<br>
+ 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Title)
+                </a>
+            </td>
+            <td style="overflow: hidden; text-overflow: ellipsis; max-width: 400px; white-space: nowrap;">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            @if(item.Closed.Year > 1)
+            {
+                <td class="text-info">
+                    Closed: @Html.DisplayFor(modelItem => item.Closed)
+                </td>
+            }
+            else
+            {
+                <td class="text-success">
+                    Active
+                </td>
+            }
+            <td>
+                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> *@
+                <a class="btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

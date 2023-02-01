@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Edit";
+    List<Platform> platforms =  (List<Platform>)ViewData["Platforms"];
+    Guid id =  (Guid)ViewData["Id"];
+}
+
+<h1>Select Platform</h1>
+
+<h4>Platform</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SelectPlatform">
+            <input type="hidden" name="ticketId" value="@id"/>
+            <div class="form-group">
+                <select name="platformId" class="form-control">
+                    @foreach (Platform item in platforms)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-Id="@id">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

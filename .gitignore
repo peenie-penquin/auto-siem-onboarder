@@ -1,0 +1,8 @@
+#DIRECTORIES#
+bin/
+obj/
+downloads/
+
+#FILES#
+*.db
+
